@@ -13,6 +13,10 @@ const dotenv = require('dotenv')
 const mongoose = require('mongoose')
 const fs = require('fs')
 
+const EventEmitter = require('events')
+const event = new EventEmitter()
+
+
 //config for env file
 dotenv.config();
 const mongoUrl = process.env.URL
@@ -26,6 +30,9 @@ app.use('/static', express.static(path.join(__dirname, 'staticfiles')))
 mongoose.connect(mongoUrl,{ useNewUrlParser: true, useUnifiedTopology: true })
 .then(() => console.log("database connected"))
 .catch((err) => console.error("connection errror"+err))
+
+
+
 
 
 // router.all('/user',(req,res) => { 
@@ -101,6 +108,14 @@ writale.end(() => {
 app.use('/',(req,res) => {
     res.sendFile(path.join(__dirname,'img.png'))
 })
+
+///listen the event
+event.on("sayMyName", () => {
+    console.log("My Name iS Rahul")
+})
+
+//call or initiate event
+event.emit('sayMyName')
 
 
 //server listen
